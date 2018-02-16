@@ -4,6 +4,7 @@ var documentClient = require("documentdb").DocumentClient;
 var config = require("./config");
 var url = require('url');
 var http = require('http');  
+var restify = require('restify');
 
 var client = new documentClient(config.endpoint, { "masterKey": config.primaryKey });
 
@@ -11,13 +12,16 @@ var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${config.database.id}`;
 var collectionUrl = `${databaseUrl}/colls/${config.collection.id}`;
 
-var http = require('http');
 
-var server = http.createServer(function(request, response) {
-
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World!");
+var server = restify.createServer();
+server.get('/hello/:name', function(req, res, next) {
+    res.send('hello ' + req.params.name);
 });
+
+server.listen(3000, function() {
+    console.log('Listening on port 3000');
+});
+
 var port = process.env.PORT || 1337;
 server.listen(port);
 
