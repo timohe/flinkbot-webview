@@ -12,20 +12,21 @@ var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${config.database.id}`;
 var collectionUrl = `${databaseUrl}/colls/${config.collection.id}`;
 
+var restify = require('restify');
+var port = process.env.PORT || 8080;
+
+function respond(req, res, next) {
+  res.send('hello ' + req.params.name);
+  next();
+}
 
 var server = restify.createServer();
-server.get('/hello/:name', function(req, res, next) {
-    res.send('hello ' + req.params.name);
+server.get('/hello/:name', respond);
+server.head('/hello/:name', respond);
+
+server.listen(port, function() {
+  console.log('%s listening at %s', server.name, server.url);
 });
-
-server.listen(3000, function() {
-    console.log('Listening on port 3000');
-});
-
-var port = process.env.PORT || 1337;
-server.listen(port);
-
-console.log("Server running at http://localhost:%d", port);
 
 /**
  * Get the database by ID, or create if it doesn't exist.
@@ -189,14 +190,14 @@ function exit(message) {
     process.stdin.on('data', process.exit.bind(process, 0));
 }
 
-getDatabase()
-    .then(() => getCollection())
-    .then(() => getFamilyDocument(config.documents.Andersen))
-    .then(() => getFamilyDocument(config.documents.Wakefield))
-    .then(() => queryCollection())
-    .then(() => replaceFamilyDocument(config.documents.Andersen))
-    .then(() => queryCollection())
-    .then(() => deleteFamilyDocument(config.documents.Andersen))
-    // .then(() => cleanup())
-    .then(() => { exit(`Completed successfully`); })
-    .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
+// getDatabase()
+//     .then(() => getCollection())
+//     .then(() => getFamilyDocument(config.documents.Andersen))
+//     .then(() => getFamilyDocument(config.documents.Wakefield))
+//     .then(() => queryCollection())
+//     .then(() => replaceFamilyDocument(config.documents.Andersen))
+//     .then(() => queryCollection())
+//     .then(() => deleteFamilyDocument(config.documents.Andersen))
+//     // .then(() => cleanup())
+//     .then(() => { exit(`Completed successfully`); })
+//     .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
