@@ -1,10 +1,10 @@
 "use strict";
 //more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
-var documentClient = require("documentdb").DocumentClient;
-var url = require('url');
+// var documentClient = require("documentdb").DocumentClient;
+// var url = require('url');
 var restify = require('restify');
-var dotenv = require("dotenv");
-dotenv.config();
+// var dotenv = require("dotenv");
+// dotenv.config();
 
 
 // //database settings
