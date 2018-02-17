@@ -15,9 +15,6 @@ var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
 var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
 
-//change this value according to user
-// var documentId = "I1KJ4DNAAEP,userData";
-
 /**
  * Get the document by ID, or create if it doesn't exist.
  * @param {function} callback - The callback function on completion
@@ -96,26 +93,6 @@ app.get('/', function (req, res) {
 
 app.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port 3000!');
+  console.log(process.versions)
   
 });
-
-
-
-// var port = process.env.PORT || 8080;
-
-// function respond(req, res, next) {
-//     res.send('hello ' + req.params.name);
-//     next();
-// }
-// var server = restify.createServer();
-// server.get('/hello/:name', respond);
-// server.head('/hello/:name', respond);
-
-// server.listen(port, function() {
-// console.log('%s listening at %s', server.name, server.url);
-// });
-
-// server.get(/\/?.*/, restify.serveStatic({
-// directory: __dirname,
-// default: 'form.html'
-// }));
