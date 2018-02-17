@@ -43,6 +43,17 @@ function getDocument(param_documentId) {
         });
     });
 };
+async function getValue(para_documentId){
+    console.log("getValue started")
+    try{
+        let value = await getDocument(para_documentId);
+        console.log("This is the document: "+ JSON.stringify(value));
+        return value;
+    } catch (err){
+        return err;
+    }
+}
+
 
 /**
  * Add or replace an entry in the Database
@@ -59,24 +70,6 @@ function replaceDocument(documentId, newdocument) {
         });
     });
 };
-
-/**
- * Get Object from Database
- */
-async function getValue(para_documentId){
-    console.log("getValue started")
-    try{
-        let value = await getDocument(para_documentId);
-        console.log("This is the document: "+ JSON.stringify(value));
-        return value;
-    } catch (err){
-        return err;
-    }
-}
-
-/**
- * Change or create a new Value in the database
- */
 async function writeValue(para_documentId, key, value){
     try{
         let oldDocument = await getDocument(para_documentId);
