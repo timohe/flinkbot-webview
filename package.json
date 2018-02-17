@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A short sample app to demonstrate how to get started with Azure Cosmos DB's DocumentDB API",
   "main": "app.js",
-  "engines":{"node": "8.9.4"},
+  "engines":{"node": "6.9.4"},
   "dependencies": {
     "documentdb": "^1.6.0",
     "dotenv": "^5.0.0",

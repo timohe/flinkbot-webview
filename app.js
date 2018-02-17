@@ -2,10 +2,12 @@
 //more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
 // var documentClient = require("documentdb").DocumentClient;
 // var url = require('url');
-var restify = require('restify');
+// var restify = require('restify');
 // var dotenv = require("dotenv");
 // dotenv.config();
 
+var express = require('express');
+var app = express();
 
 // //database settings
 // var client = new documentClient(process.env.COSMOS_ENDPOINT, { "masterKey": process.env.COSMOS_PRIMARY_KEY });
@@ -86,8 +88,7 @@ var restify = require('restify');
 // writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 23");
 
 
-var express = require('express');
-var app = express();
+
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
