@@ -8,12 +8,28 @@ dotenv.config();
 
 var express = require('express');
 var app = express();
+// var ejs = require('ejs')
 
 //database settings
 var client = new documentClient(process.env.COSMOS_ENDPOINT, { "masterKey": process.env.COSMOS_PRIMARY_KEY });
 var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
 var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
+
+
+app.set('view engine', 'ejs')
+
+app.get('/', function (req, res) {
+    res.render('index');
+});
+
+app.listen(process.env.PORT || 3000, function () {
+  console.log('Example app listening on port 3000!');
+//   console.log(process.versions)
+  
+});
+
+
 
 /**
  * Get the document by ID, or create if it doesn't exist.
@@ -81,18 +97,7 @@ async function writeValue(para_documentId, key, value){
     }
 }
 
-getValue("I1KJ4DNAAEP,userData");
-writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 111");
+// getValue("I1KJ4DNAAEP,userData");
+// writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 111");
 
 
-
-
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
-app.listen(process.env.PORT || 3000, function () {
-  console.log('Example app listening on port 3000!');
-  console.log(process.versions)
-  
-});
