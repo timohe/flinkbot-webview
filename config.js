@@ -3,6 +3,32 @@ var config = {}
 config.endpoint = "https://flinkbot.documents.azure.com";
 config.primaryKey = "lr1WoLHjKNQWxUNuXV20Dg7qWTENPadoXSVytHnBELRMzMcVt4maII10oA1N7ekBCk5cagMoOlUxjkF6fZCguA==";
 
+config.botDatabase = {
+    "id": "botdb"
+};
+config.botCollection = {
+    "id": "botdata"
+};
+
+config.userId = {
+    "id": "I1KJ4DNAAEP,userData"
+};
+
+config.documentToWrite = {
+    "Wakefield": {
+        "id": "Wakefield.7",
+        "parents": [{
+            "familyName": "Wakefield",
+            "firstName": "Robin"
+        }, {
+                "familyName": "Miller",
+                "firstName": "Ben"
+            }],
+        "isRegistered": false
+    }
+};
+
+
 config.database = {
     "id": "FamilyDB"
 };

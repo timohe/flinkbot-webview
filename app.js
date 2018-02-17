@@ -11,6 +11,7 @@ var client = new documentClient(config.endpoint, { "masterKey": config.primaryKe
 var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${config.database.id}`;
 var collectionUrl = `${databaseUrl}/colls/${config.collection.id}`;
+var botCollectionUrl = `${databaseUrl}/colls/${config.botCollection.id}`;
 
 var restify = require('restify');
 var port = process.env.PORT || 8080;
@@ -20,13 +21,125 @@ function respond(req, res, next) {
   next();
 }
 
-var server = restify.createServer();
-server.get('/hello/:name', respond);
-server.head('/hello/:name', respond);
+// var server = restify.createServer();
+// server.get('/hello/:name', respond);
+// server.head('/hello/:name', respond);
 
-server.listen(port, function() {
-  console.log('%s listening at %s', server.name, server.url);
-});
+// server.listen(port, function() {
+//   console.log('%s listening at %s', server.name, server.url);
+// });
+
+// server.get(/\/?.*/, restify.serveStatic({
+//     directory: __dirname,
+//     default: 'form.html'
+// }));
+
+
+function getBotDatabaseName() {
+    console.log(`Getting database:\n${config.botDatabase.id}\n`);
+
+    return new Promise((resolve, reject) => {
+        client.readDatabase(databaseUrl, (err, result) => {
+            if (err) {
+                if (err.code == HttpStatusCodes.NOTFOUND) {
+                    client.createDatabase(config.botDatabase, (err, created) => {
+                        if (err) reject(err)
+                        else resolve(created);
+                    });
+                } else {
+                    reject(err);
+                }
+            } else {
+                resolve(result);
+            }
+        });
+    });
+
+}
+
+function getBotCollection() {
+    console.log(`Getting collection:\n${config.botCollection.id}\n`);
+
+    return new Promise((resolve, reject) => {
+        client.readCollection(botCollectionUrl, (err, result) => {
+            if (err) {
+                if (err.code == HttpStatusCodes.NOTFOUND) {
+                    client.createCollection(databaseUrl, config.botCollection, { offerThroughput: 400 }, (err, created) => {
+                        if (err) reject(err)
+                        else resolve(created);
+                    });
+                } else {
+                    reject(err);
+                }
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+/**
+ * Get the document by ID, or create if it doesn't exist.
+ * @param {function} callback - The callback function on completion
+ */
+function getBotDocument(document) {
+    let documentUrl = `${collectionUrl}/docs/${document.id}`;
+    console.log(`Getting Bot document: ${document.id}`);
+
+    return new Promise((resolve, reject) => {
+        client.readDocument(documentUrl, (err, result) => {
+            if (err) {
+                if (err.code == HttpStatusCodes.NOTFOUND) {
+                    client.createDocument(collectionUrl, document, (err, created) => {
+                        if (err) reject(err)
+                        else resolve(created);
+                    });
+                } else {
+                    reject(err);
+                }
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+getValue();
+
+
+async function getValue(){
+    try{
+        console.log("ksjfaljsfl")
+        let value = await getBotDocument(config.documents.Andersen);
+        console.log(value.parents);
+        return value;
+    } catch (err){
+        return err;
+    }
+}
+
+
+//  .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
+
+// getBotDatabaseName()
+//     //  .then(() => getBotCollection())
+//       .then(() => getBotDocument(config.userId))
+// //     .then(() => getFamilyDocument(config.documents.Wakefield))
+//     // .then(() => queryCollection())
+// //     .then(() => replaceFamilyDocument(config.documents.Andersen))
+// //     .then(() => queryCollection())
+// //     .then(() => deleteFamilyDocument(config.documents.Andersen))
+// //     // .then(() => cleanup())
+//      .then(() => { exit(`Completed successfully`); })
+//      .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
+
+
+
+
+
+
+
+
 
 /**
  * Get the database by ID, or create if it doesn't exist.
@@ -190,14 +303,17 @@ function exit(message) {
     process.stdin.on('data', process.exit.bind(process, 0));
 }
 
-// getDatabase()
-//     .then(() => getCollection())
+
+
+
+//  getDatabase()
+//     // .then(() => getCollection())
 //     .then(() => getFamilyDocument(config.documents.Andersen))
-//     .then(() => getFamilyDocument(config.documents.Wakefield))
-//     .then(() => queryCollection())
-//     .then(() => replaceFamilyDocument(config.documents.Andersen))
-//     .then(() => queryCollection())
-//     .then(() => deleteFamilyDocument(config.documents.Andersen))
+//     // .then(() => getFamilyDocument(config.documents.Wakefield))
+//     // .then(() => queryCollection())
+//     // .then(() => replaceFamilyDocument(config.documents.Andersen))
+//     // .then(() => queryCollection())
+//     // .then(() => deleteFamilyDocument(config.documents.Andersen))
 //     // .then(() => cleanup())
 //     .then(() => { exit(`Completed successfully`); })
 //     .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
