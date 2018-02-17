@@ -1,7 +1,6 @@
 "use strict";
 //more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
 var documentClient = require("documentdb").DocumentClient;
-var config = require("./config");
 var url = require('url');
 
 var dotenv = require("dotenv")
@@ -15,30 +14,30 @@ var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
 var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
 
 //change this value according to user
-var userId = "I1KJ4DNAAEP,userData";
+// var documentId = "I1KJ4DNAAEP,userData";
 
 /**
  * Get the document by ID, or create if it doesn't exist.
  * @param {function} callback - The callback function on completion
  */
-function getDocument(param_userId) {
-    let documentUrl = `${collectionUrl}/docs/${param_userId}`;
+function getDocument(param_documentId) {
+    let documentUrl = `${collectionUrl}/docs/${param_documentId}`;
     console.log(`Getting Bot document: ${documentUrl}`);
     return new Promise((resolve, reject) => {
         client.readDocument(documentUrl, (err, result) => {
             if (err) {
-                console.log(err);
+                // console.log(err);
                 if (err.code == HttpStatusCodes.NOTFOUND) {
                     client.createDocument(collectionUrl, document, (err, created) => {
                         if (err) reject(err)
                         else resolve(created);
                     });
                 } else {
-                    console.log(err);
+                    // console.log(err);
                     reject(err);
                 }
             } else {
-                console.log(err);                
+                // console.log(err);                
                 resolve(result);
             }
         });
@@ -48,13 +47,11 @@ function getDocument(param_userId) {
 /**
  * Add or replace an entry in the Database
  */
-function replaceDocument(document) {
-    let documentUrl = `${collectionUrl}/docs/${document.id}`;
-    console.log(`Replacing document:\n${document.id}\n`);
-    document.children[0].neu = 7;
-
+function replaceDocument(documentId, newdocument) {
+    let documentUrl = `${collectionUrl}/docs/${documentId}`;
+    console.log(`Replacing document:\n${documentId}\n`);
     return new Promise((resolve, reject) => {
-        client.replaceDocument(documentUrl, document, (err, result) => {
+        client.replaceDocument(documentUrl, newdocument, (err, result) => {
             if (err) reject(err);
             else {
                 resolve(result);
@@ -63,11 +60,13 @@ function replaceDocument(document) {
     });
 };
 
-
-async function getValue(){
+/**
+ * Get Object from Database
+ */
+async function getValue(para_documentId){
     console.log("getValue started")
     try{
-        let value = await getDocument(userId);
+        let value = await getDocument(para_documentId);
         console.log("This is the document: "+ JSON.stringify(value));
         return value;
     } catch (err){
@@ -75,18 +74,23 @@ async function getValue(){
     }
 }
 
-async function writeValue(){
+/**
+ * Change or create a new Value in the database
+ */
+async function writeValue(para_documentId, key, value){
     try{
-        let value = await replaceBotDocument(config.documents.Andersen);
-        console.log(value);
-        return value;
+        let oldDocument = await getDocument(para_documentId);
+        oldDocument.data[key] = value;
+        let docAfterReplacing = await replaceDocument(para_documentId, oldDocument);
+        console.log("This is updated document: " + "\n" +  JSON.stringify(docAfterReplacing));
+        return docAfterReplacing;
     } catch (err){
         return err;
     }
 }
 
-getValue();
-
+getValue("I1KJ4DNAAEP,userData");
+writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 23");
 
 
 
