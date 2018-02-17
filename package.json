@@ -7,6 +7,7 @@
     "node": ">=8.1.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "documentdb": "^1.6.0",
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
