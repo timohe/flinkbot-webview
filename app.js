@@ -2,8 +2,8 @@
 //more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
 var documentClient = require("documentdb").DocumentClient;
 var url = require('url');
-
-var dotenv = require("dotenv")
+var restify = require('restify');
+var dotenv = require("dotenv");
 dotenv.config();
 
 
@@ -86,24 +86,34 @@ getValue("I1KJ4DNAAEP,userData");
 writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 23");
 
 
+var express = require('express');
+var app = express();
 
-// var restify = require('restify');
-    // var port = process.env.PORT || 8080;
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
 
-    // function respond(req, res, next) {
-    //   res.send('hello ' + req.params.name);
-    //   next();
-    // }
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
 
-    // var server = restify.createServer();
-    // server.get('/hello/:name', respond);
-    // server.head('/hello/:name', respond);
 
-    // server.listen(port, function() {
-    //   console.log('%s listening at %s', server.name, server.url);
-    // });
 
-    // server.get(/\/?.*/, restify.serveStatic({
-    //     directory: __dirname,
-    //     default: 'form.html'
-    // }));
+// var port = process.env.PORT || 8080;
+
+// function respond(req, res, next) {
+//     res.send('hello ' + req.params.name);
+//     next();
+// }
+// var server = restify.createServer();
+// server.get('/hello/:name', respond);
+// server.head('/hello/:name', respond);
+
+// server.listen(port, function() {
+// console.log('%s listening at %s', server.name, server.url);
+// });
+
+// server.get(/\/?.*/, restify.serveStatic({
+// directory: __dirname,
+// default: 'form.html'
+// }));
