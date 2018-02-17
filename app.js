@@ -1,5 +1,7 @@
 "use strict";
 // more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
+// EJS express node turorial https://codeburst.io/build-a-weather-website-in-30-minutes-with-node-js-express-openweather-a317f904897b
+
 var documentClient = require("documentdb").DocumentClient;
 var url = require('url');
 var restify = require('restify');
@@ -8,7 +10,6 @@ dotenv.config();
 
 var express = require('express');
 var app = express();
-// var ejs = require('ejs')
 
 //database settings
 var client = new documentClient(process.env.COSMOS_ENDPOINT, { "masterKey": process.env.COSMOS_PRIMARY_KEY });
@@ -16,9 +17,13 @@ var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
 var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
 
+// expose the public folder so it can be used.
+app.use(express.static('public'));
 
+//use EJS (no require needed)
 app.set('view engine', 'ejs')
 
+//route for /get
 app.get('/', function (req, res) {
     res.render('index');
 });
