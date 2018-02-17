@@ -1,215 +1,44 @@
 "use strict";
-
+//more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
 var documentClient = require("documentdb").DocumentClient;
 var config = require("./config");
 var url = require('url');
-var http = require('http');  
-var restify = require('restify');
 
-var client = new documentClient(config.endpoint, { "masterKey": config.primaryKey });
+var dotenv = require("dotenv")
+dotenv.config();
 
+
+//database settings
+var client = new documentClient(process.env.COSMOS_ENDPOINT, { "masterKey": process.env.COSMOS_PRIMARY_KEY });
 var HttpStatusCodes = { NOTFOUND: 404 };
-var databaseUrl = `dbs/${config.database.id}`;
-var collectionUrl = `${databaseUrl}/colls/${config.collection.id}`;
-var botCollectionUrl = `${databaseUrl}/colls/${config.botCollection.id}`;
+var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
+var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
 
-var restify = require('restify');
-var port = process.env.PORT || 8080;
-
-function respond(req, res, next) {
-  res.send('hello ' + req.params.name);
-  next();
-}
-
-// var server = restify.createServer();
-// server.get('/hello/:name', respond);
-// server.head('/hello/:name', respond);
-
-// server.listen(port, function() {
-//   console.log('%s listening at %s', server.name, server.url);
-// });
-
-// server.get(/\/?.*/, restify.serveStatic({
-//     directory: __dirname,
-//     default: 'form.html'
-// }));
-
-
-function getBotDatabaseName() {
-    console.log(`Getting database:\n${config.botDatabase.id}\n`);
-
-    return new Promise((resolve, reject) => {
-        client.readDatabase(databaseUrl, (err, result) => {
-            if (err) {
-                if (err.code == HttpStatusCodes.NOTFOUND) {
-                    client.createDatabase(config.botDatabase, (err, created) => {
-                        if (err) reject(err)
-                        else resolve(created);
-                    });
-                } else {
-                    reject(err);
-                }
-            } else {
-                resolve(result);
-            }
-        });
-    });
-
-}
-
-function getBotCollection() {
-    console.log(`Getting collection:\n${config.botCollection.id}\n`);
-
-    return new Promise((resolve, reject) => {
-        client.readCollection(botCollectionUrl, (err, result) => {
-            if (err) {
-                if (err.code == HttpStatusCodes.NOTFOUND) {
-                    client.createCollection(databaseUrl, config.botCollection, { offerThroughput: 400 }, (err, created) => {
-                        if (err) reject(err)
-                        else resolve(created);
-                    });
-                } else {
-                    reject(err);
-                }
-            } else {
-                resolve(result);
-            }
-        });
-    });
-}
+//change this value according to user
+var userId = "I1KJ4DNAAEP,userData";
 
 /**
  * Get the document by ID, or create if it doesn't exist.
  * @param {function} callback - The callback function on completion
  */
-function getBotDocument(document) {
-    let documentUrl = `${collectionUrl}/docs/${document.id}`;
-    console.log(`Getting Bot document: ${document.id}`);
-
+function getDocument(param_userId) {
+    let documentUrl = `${collectionUrl}/docs/${param_userId}`;
+    console.log(`Getting Bot document: ${documentUrl}`);
     return new Promise((resolve, reject) => {
         client.readDocument(documentUrl, (err, result) => {
             if (err) {
+                console.log(err);
                 if (err.code == HttpStatusCodes.NOTFOUND) {
                     client.createDocument(collectionUrl, document, (err, created) => {
                         if (err) reject(err)
                         else resolve(created);
                     });
                 } else {
+                    console.log(err);
                     reject(err);
                 }
             } else {
-                resolve(result);
-            }
-        });
-    });
-};
-
-getValue();
-
-
-async function getValue(){
-    try{
-        console.log("ksjfaljsfl")
-        let value = await getBotDocument(config.documents.Andersen);
-        console.log(value.parents);
-        return value;
-    } catch (err){
-        return err;
-    }
-}
-
-
-//  .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
-
-// getBotDatabaseName()
-//     //  .then(() => getBotCollection())
-//       .then(() => getBotDocument(config.userId))
-// //     .then(() => getFamilyDocument(config.documents.Wakefield))
-//     // .then(() => queryCollection())
-// //     .then(() => replaceFamilyDocument(config.documents.Andersen))
-// //     .then(() => queryCollection())
-// //     .then(() => deleteFamilyDocument(config.documents.Andersen))
-// //     // .then(() => cleanup())
-//      .then(() => { exit(`Completed successfully`); })
-//      .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
-
-
-
-
-
-
-
-
-
-/**
- * Get the database by ID, or create if it doesn't exist.
- * @param {string} database - The database to get or create
- */
-function getDatabase() {
-    console.log(`Getting database:\n${config.database.id}\n`);
-
-    return new Promise((resolve, reject) => {
-        client.readDatabase(databaseUrl, (err, result) => {
-            if (err) {
-                if (err.code == HttpStatusCodes.NOTFOUND) {
-                    client.createDatabase(config.database, (err, created) => {
-                        if (err) reject(err)
-                        else resolve(created);
-                    });
-                } else {
-                    reject(err);
-                }
-            } else {
-                resolve(result);
-            }
-        });
-    });
-}
-
-/**
- * Get the collection by ID, or create if it doesn't exist.
- */
-function getCollection() {
-    console.log(`Getting collection:\n${config.collection.id}\n`);
-
-    return new Promise((resolve, reject) => {
-        client.readCollection(collectionUrl, (err, result) => {
-            if (err) {
-                if (err.code == HttpStatusCodes.NOTFOUND) {
-                    client.createCollection(databaseUrl, config.collection, { offerThroughput: 400 }, (err, created) => {
-                        if (err) reject(err)
-                        else resolve(created);
-                    });
-                } else {
-                    reject(err);
-                }
-            } else {
-                resolve(result);
-            }
-        });
-    });
-}
-
-/**
- * Get the document by ID, or create if it doesn't exist.
- * @param {function} callback - The callback function on completion
- */
-function getFamilyDocument(document) {
-    let documentUrl = `${collectionUrl}/docs/${document.id}`;
-    console.log(`Getting document:\n${document.id}\n`);
-
-    return new Promise((resolve, reject) => {
-        client.readDocument(documentUrl, (err, result) => {
-            if (err) {
-                if (err.code == HttpStatusCodes.NOTFOUND) {
-                    client.createDocument(collectionUrl, document, (err, created) => {
-                        if (err) reject(err)
-                        else resolve(created);
-                    });
-                } else {
-                    reject(err);
-                }
-            } else {
+                console.log(err);                
                 resolve(result);
             }
         });
@@ -217,36 +46,12 @@ function getFamilyDocument(document) {
 };
 
 /**
- * Query the collection using SQL
+ * Add or replace an entry in the Database
  */
-function queryCollection() {
-    console.log(`Querying collection through index:\n${config.collection.id}`);
-
-    return new Promise((resolve, reject) => {
-        client.queryDocuments(
-            collectionUrl,
-            'SELECT VALUE r.children FROM root r WHERE r.lastName = "Andersen"'
-        ).toArray((err, results) => {
-            if (err) reject(err)
-            else {
-                for (var queryResult of results) {
-                    let resultString = JSON.stringify(queryResult);
-                    console.log(`\tQuery returned ${resultString}`);
-                }
-                console.log();
-                resolve(results);
-            }
-        });
-    });
-};
-
-/**
- * Replace the document by ID.
- */
-function replaceFamilyDocument(document) {
+function replaceDocument(document) {
     let documentUrl = `${collectionUrl}/docs/${document.id}`;
     console.log(`Replacing document:\n${document.id}\n`);
-    document.children[0].grade = 6;
+    document.children[0].neu = 7;
 
     return new Promise((resolve, reject) => {
         client.replaceDocument(documentUrl, document, (err, result) => {
@@ -258,62 +63,50 @@ function replaceFamilyDocument(document) {
     });
 };
 
-/**
- * Delete the document by ID.
- */
-function deleteFamilyDocument(document) {
-    let documentUrl = `${collectionUrl}/docs/${document.id}`;
-    console.log(`Deleting document:\n${document.id}\n`);
 
-    return new Promise((resolve, reject) => {
-        client.deleteDocument(documentUrl, (err, result) => {
-            if (err) reject(err);
-            else {
-                resolve(result);
-            }
-        });
-    });
-};
-
-
-
-/**
- * Cleanup the database and collection on completion
- */
-function cleanup() {
-    console.log(`Cleaning up by deleting database ${config.database.id}`);
-
-    return new Promise((resolve, reject) => {
-        client.deleteDatabase(databaseUrl, (err) => {
-            if (err) reject(err)
-            else resolve(null);
-        });
-    });
+async function getValue(){
+    console.log("getValue started")
+    try{
+        let value = await getDocument(userId);
+        console.log("This is the document: "+ JSON.stringify(value));
+        return value;
+    } catch (err){
+        return err;
+    }
 }
 
-/**
- * Exit the app with a prompt
- * @param {message} message - The message to display
- */
-function exit(message) {
-    console.log(message);
-    console.log('Press any key to exit');
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-    process.stdin.on('data', process.exit.bind(process, 0));
+async function writeValue(){
+    try{
+        let value = await replaceBotDocument(config.documents.Andersen);
+        console.log(value);
+        return value;
+    } catch (err){
+        return err;
+    }
 }
 
+getValue();
 
 
 
-//  getDatabase()
-//     // .then(() => getCollection())
-//     .then(() => getFamilyDocument(config.documents.Andersen))
-//     // .then(() => getFamilyDocument(config.documents.Wakefield))
-//     // .then(() => queryCollection())
-//     // .then(() => replaceFamilyDocument(config.documents.Andersen))
-//     // .then(() => queryCollection())
-//     // .then(() => deleteFamilyDocument(config.documents.Andersen))
-//     // .then(() => cleanup())
-//     .then(() => { exit(`Completed successfully`); })
-//     .catch((error) => { exit(`Completed with error ${JSON.stringify(error)}`) });
+
+// var restify = require('restify');
+    // var port = process.env.PORT || 8080;
+
+    // function respond(req, res, next) {
+    //   res.send('hello ' + req.params.name);
+    //   next();
+    // }
+
+    // var server = restify.createServer();
+    // server.get('/hello/:name', respond);
+    // server.head('/hello/:name', respond);
+
+    // server.listen(port, function() {
+    //   console.log('%s listening at %s', server.name, server.url);
+    // });
+
+    // server.get(/\/?.*/, restify.serveStatic({
+    //     directory: __dirname,
+    //     default: 'form.html'
+    // }));
