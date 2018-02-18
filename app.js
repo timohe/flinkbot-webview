@@ -26,14 +26,25 @@ app.use(express.static('public'));
 // use body Parser middleware to get variables submitted (req.body)
 app.use(bodyParser.urlencoded({ extended: true }));
 //use EJS (no require needed)
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
+
+
+var userId;
 //route for /get
+// http://localhost:3000/login?userId=2323235
+
 app.get('/', function (req, res) {
+    res.send('almost 404, use login route to login');
+});
+
+app.get('/login', function (req, res) {
+    userId = req.query('userId');
     res.render('index');
 });
 
-app.post('/', function (req, res) {
+
+app.post('/login', function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
@@ -41,15 +52,20 @@ app.post('/', function (req, res) {
         method: 'POST',
         url: 'https://test.goflink.ch/api/v1/auth',
         headers: { 'Content-Type': 'application/json' },
+        //TODO: replace this with username and password given above.
         body: { username: 'test@test.ch', password: 'Plokiupl2' },
         json: true
     };
-
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-
+        else {
+            console.log("the user Id is" + userId);
+            //TODO: take user id from url param
+            writeValue("I1KJ4DNAAEP,userData", "authToken", body);
+        }
         console.log(body);
     });
+    res.redirect('/sucessfull');
 })
 
 
