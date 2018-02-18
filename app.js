@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 var userId;
 //route for /get
-// http://localhost:3000/login?userId=2323235
+// http://localhost:3000/login?userId=I1KJ4DNAAEP
 
 app.get('/', function (req, res) {
     res.send('almost 404, use login route to login');
@@ -56,8 +56,7 @@ app.post('/login', function (req, res) {
         method: 'POST',
         url: 'https://test.goflink.ch/api/v1/auth',
         headers: { 'Content-Type': 'application/json' },
-        //TODO: replace this with username and password given above.
-        body: { username: 'test@test.ch', password: 'Plokiupl2' },
+        body: { username: username, password: password },
         json: true
     };
     request(options, function (error, response, body) {
@@ -68,7 +67,7 @@ app.post('/login', function (req, res) {
             console.log("the user Id is" + userId);
             //TODO: take user id from url param
             if(!body.error){
-                writeValue("I1KJ4DNAAEP,userData", "authToken", body);
+                writeValue(`${userId},userData`, "authToken", body);
                 res.redirect('/successful');
             }
             res.render('index', {error: 'Login failed, please try again'});
