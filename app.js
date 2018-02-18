@@ -40,9 +40,13 @@ app.get('/', function (req, res) {
 
 app.get('/login', function (req, res) {
     userId = req.query('userId');
-    res.render('index');
+    res.render('index', {error: null});
 });
 
+
+app.get('/successful', function (req, res) {
+    res.render('successpage');
+});
 
 app.post('/login', function (req, res) {
     var username = req.body.username;
@@ -57,15 +61,21 @@ app.post('/login', function (req, res) {
         json: true
     };
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) {
+            throw new Error(error);
+        }    
         else {
             console.log("the user Id is" + userId);
             //TODO: take user id from url param
-            writeValue("I1KJ4DNAAEP,userData", "authToken", body);
+            if(!body.error){
+                writeValue("I1KJ4DNAAEP,userData", "authToken", body);
+                res.redirect('/successful');
+            }
+            res.render('index', {error: 'Login failed, please try again'});
         }
         console.log(body);
     });
-    res.redirect('/sucessfull');
+    
 })
 
 
@@ -99,7 +109,7 @@ function getDocument(param_documentId) {
                     reject(err);
                 }
             } else {
-                // console.log(err);                
+                // console.log(err);
                 resolve(result);
             }
         });
