@@ -1,9 +1,15 @@
 "use strict";
 // more samples here https://github.com/Azure-Samples/documentdb-node-getting-started/blob/master/app.js
+// EJS express node turorial https://codeburst.io/build-a-weather-website-in-30-minutes-with-node-js-express-openweather-a317f904897b
+// vscode: shift option f to beautify
+
 var documentClient = require("documentdb").DocumentClient;
 var url = require('url');
 var restify = require('restify');
 var dotenv = require("dotenv");
+var bodyParser = require('body-parser');
+var request = require('request');
+
 dotenv.config();
 
 var express = require('express');
@@ -14,6 +20,72 @@ var client = new documentClient(process.env.COSMOS_ENDPOINT, { "masterKey": proc
 var HttpStatusCodes = { NOTFOUND: 404 };
 var databaseUrl = `dbs/${process.env.COSMOS_DATABASE_ID}`;
 var collectionUrl = `${databaseUrl}/colls/${process.env.COSMOS_COLLECTION_ID}`;
+
+// expose the public folder so it can be used.
+app.use(express.static('public'));
+// use body Parser middleware to get variables submitted (req.body)
+app.use(bodyParser.urlencoded({ extended: true }));
+//use EJS (no require needed)
+app.set('view engine', 'ejs');
+
+
+
+var userId;
+//route for /get
+// http://localhost:3000/login?userId=I1KJ4DNAAEP
+
+app.get('/', function (req, res) {
+    res.send('almost 404, use login route to login');
+});
+
+app.get('/login', function (req, res) {
+    userId = req.query('userId');
+    res.render('index', {error: null});
+});
+
+
+app.get('/successful', function (req, res) {
+    res.render('successpage');
+});
+
+app.post('/login', function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    var options = {
+        method: 'POST',
+        url: 'https://test.goflink.ch/api/v1/auth',
+        headers: { 'Content-Type': 'application/json' },
+        body: { username: username, password: password },
+        json: true
+    };
+    request(options, function (error, response, body) {
+        if (error) {
+            throw new Error(error);
+        }    
+        else {
+            console.log("the user Id is" + userId);
+            //TODO: take user id from url param
+            if(!body.error){
+                writeValue(`${userId},userData`, "authToken", body);
+                res.redirect('/successful');
+            }
+            res.render('index', {error: 'Login failed, please try again'});
+        }
+        console.log(body);
+    });
+    
+})
+
+
+
+
+app.listen(process.env.PORT || 3000, function () {
+    console.log('App started and listening on port 3000!');
+    //   console.log(process.versions)
+});
+
+
 
 /**
  * Get the document by ID, or create if it doesn't exist.
@@ -36,19 +108,19 @@ function getDocument(param_documentId) {
                     reject(err);
                 }
             } else {
-                // console.log(err);                
+                // console.log(err);
                 resolve(result);
             }
         });
     });
 };
-async function getValue(para_documentId){
+async function getValue(para_documentId) {
     console.log("getValue started")
-    try{
+    try {
         let value = await getDocument(para_documentId);
-        console.log("This is the document: "+ JSON.stringify(value));
+        console.log("This is the document: " + JSON.stringify(value));
         return value;
-    } catch (err){
+    } catch (err) {
         return err;
     }
 }
@@ -69,30 +141,19 @@ function replaceDocument(documentId, newdocument) {
         });
     });
 };
-async function writeValue(para_documentId, key, value){
-    try{
+async function writeValue(para_documentId, key, value) {
+    try {
         let oldDocument = await getDocument(para_documentId);
         oldDocument.data[key] = value;
         let docAfterReplacing = await replaceDocument(para_documentId, oldDocument);
-        console.log("This is updated document: " + "\n" +  JSON.stringify(docAfterReplacing));
+        console.log("This is updated document: " + "\n" + JSON.stringify(docAfterReplacing));
         return docAfterReplacing;
-    } catch (err){
+    } catch (err) {
         return err;
     }
 }
 
-getValue("I1KJ4DNAAEP,userData");
-writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 111");
+// getValue("I1KJ4DNAAEP,userData");
+// writeValue("I1KJ4DNAAEP,userData", "address", "josefstrasse 111");
 
 
-
-
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
-app.listen(process.env.PORT || 3000, function () {
-  console.log('Example app listening on port 3000!');
-  console.log(process.versions)
-  
-});
