@@ -49,14 +49,15 @@ app.get('/successful', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
-    var username = req.body.username;
+    var email = req.body.email;
     var password = req.body.password;
+
 
     var options = {
         method: 'POST',
         url: 'https://test.goflink.ch/api/v1/auth',
         headers: { 'Content-Type': 'application/json' },
-        body: { username: username, password: password },
+        body: { username: email, password: password },
         json: true
     };
     request(options, function (error, response, body) {
