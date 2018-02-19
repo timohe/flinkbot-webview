@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 
 app.get('/login', function (req, res) {
     userId = req.query('userId');
-    userId = userId.substr(0,16);
+    // userId = userId.substr(0,16);
     
     res.render('index', {error: null, userId: `this is your user Id: ${userId}`});
 });
@@ -68,7 +68,6 @@ app.post('/login', function (req, res) {
         }    
         else {
             console.log("the user Id is" + userId);
-            //TODO: take user id from url param
             if(!body.error){
                 writeValue(`${userId},userData`, "authToken", body);
                 res.redirect('/successful');
