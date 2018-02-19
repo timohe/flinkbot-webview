@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 
 app.get('/login', function (req, res) {
     userId = req.query('userId');
-    res.render('index', {error: null});
+    res.render('index', {error: null, userId: `this is your user Id: ${userId}`});
 });
 
 
@@ -71,7 +71,7 @@ app.post('/login', function (req, res) {
                 writeValue(`${userId},userData`, "authToken", body);
                 res.redirect('/successful');
             }
-            res.render('index', {error: 'Login failed, please try again'});
+            res.render('index', {error: 'Login failed, please try again', username:"there is the useridbla"});
         }
         console.log(body);
     });
