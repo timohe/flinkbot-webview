@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 
 app.get('/login', function (req, res) {
     userId = req.query('userId');
-    userId = userId.substr(0,17);
+    userId = userId.substr(0,16);
     
     res.render('index', {error: null, userId: `this is your user Id: ${userId}`});
 });
