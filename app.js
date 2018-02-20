@@ -47,14 +47,13 @@ app.get('/login', function (req, res) {
 
 
 app.get('/successful', function (req, res) {
-    res.render('successpage');
+    res.render('successpage', {closeWebview: true});
 });
 
 app.post('/login', function (req, res) {
+
     var email = req.body.email;
     var password = req.body.password;
-
-
     var options = {
         method: 'POST',
         url: 'https://test.goflink.ch/api/v1/auth',
@@ -78,9 +77,6 @@ app.post('/login', function (req, res) {
     });
     
 })
-
-
-
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('App started and listening on port 3000!');
@@ -116,7 +112,6 @@ function getDocument(param_documentId) {
         });
     });
 };
-
 async function getValue(para_documentId) {
     console.log("getValue started")
     try {
