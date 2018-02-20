@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 var userId;
 //route for /get
-// http://localhost:3000/login?userId=I1KJ4DNAAEP
+// use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
 
 app.get('/', function (req, res) {
     res.send('almost 404, use login route to login');
