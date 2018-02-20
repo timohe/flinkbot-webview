@@ -2,33 +2,42 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Test</title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+	<meta charset="utf-8">
+	<title>Test</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
-  <script>
-    (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) { return; }
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'Messenger'));
+	<script>
+		(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) { return; }
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'Messenger'));
 
-    window.extAsyncInit = function () {
-      MessengerExtensions.requestCloseBrowser(function success() {
-        console.log("webview closed");
-      }, function error(err) {
-        console.log("error when closing webview");
-      });
-    };
-  </script>
-  <div class="container">
-    <p>Login successful, please close this window if not closed automatically</p>
-  </div>
+		window.extAsyncInit = function () {
+			MessengerExtensions.getContext('YOUR_APP_ID', 
+			function success(thread_context){
+				console.log("getContext from facebook was sucessfull");
+				console.log("das ist die PSID" + thread.context.psid)
+			},
+			function error(err){
+				// error
+			}
+			);
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log("webview closed");
+			}, function error(err) {
+				console.log("error when closing webview" + err);
+			});
+		};
+	</script>
+	<div class="container">
+		<p>Login successful, please close this window if not closed automatically</p>
+	</div>
 </body>
 
 </html>
