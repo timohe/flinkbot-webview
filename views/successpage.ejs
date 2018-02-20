@@ -17,13 +17,13 @@
           }(document, 'script', 'Messenger'));
     
           window.extAsyncInit = function() {
-            console.log("Messenger extension loaded");
+            MessengerExtensions.requestCloseBrowser(function success() {
+            console.log("webview closed");
+            }, function error(err) {
+            console.log("error when closing webview");
+            });
           };
-          MessengerExtensions.requestCloseBrowser(function success() {
-          console.log("webview closed");
-          }, function error(err) {
-          console.log("error when closing webview");
-          });
+          
       </script>
     <div class="container">
         <p>Login successful, please close this window if not closed automatically</p> 
