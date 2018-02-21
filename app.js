@@ -28,8 +28,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //use EJS (no require needed)
 app.set('view engine', 'ejs');
 
-
-
 var userId;
 //route for /get
 // use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
