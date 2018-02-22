@@ -19,6 +19,7 @@
 		}(document, 'script', 'Messenger'));
 
 		window.extAsyncInit = function () {
+			//TODO: Include APP_ID
 			MessengerExtensions.getContext('YOUR_APP_ID', 
 			function success(thread_context){
 				console.log("getContext from facebook was sucessfull");

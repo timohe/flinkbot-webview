@@ -40,12 +40,12 @@ app.get('/login', function (req, res) {
     userId = req.query('userId');
     userId = userId.substr(0,16);
     
-    res.render('index', {error: null, userId: `this is your user Id: ${userId}`});
+    res.render('loginPage', {error: null, userId: `this is your user Id: ${userId}`});
 });
 
 
-app.get('/successful', function (req, res) {
-    res.render('successpage', {closeWebview: true});
+app.get('/loginSuccess', function (req, res) {
+    res.render('loginPage_success', {closeWebview: true});
 });
 
 app.post('/login', function (req, res) {
@@ -67,9 +67,9 @@ app.post('/login', function (req, res) {
             console.log("the user Id is" + userId);
             if(!body.error){
                 writeValue(`${userId},userData`, "authToken", body);
-                res.redirect('/successful');
+                res.redirect('/loginPage_success');
             }
-            res.render('index', {error: 'Login failed, please try again', username:"there is the useridbla"});
+            res.render('loginPage', {error: 'Login failed, please try again', username:"there is the useridbla"});
         }
         console.log(body);
     });
