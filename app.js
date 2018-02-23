@@ -48,6 +48,11 @@ app.get('/loginSuccess', function (req, res) {
     res.render('loginPage_success', {closeWebview: true});
 });
 
+
+app.get('/claim', function (req, res) {
+    res.render('claimObjectPage');
+});
+
 app.post('/login', function (req, res) {
 
     var email = req.body.email;
