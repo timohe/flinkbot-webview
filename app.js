@@ -29,28 +29,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 var userId;
-//route for /get
 // use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
 
+/**
+ * Handle login, save token in azure database
+ */
 app.get('/', function (req, res) {
-    res.send('almost 404, use login route to login');
+    res.send('Go away! There is nothing here at the moment!');
 });
+
+
+/**
+ * Handle login, save token in azure database
+ */
 
 app.get('/login', function (req, res) {
     userId = req.query('userId');
-    userId = userId.substr(0,16);
-    
-    res.render('loginPage', {error: null, userId: `this is your user Id: ${userId}`});
-});
+    userId = userId.substr(0, 16);
 
-
-app.get('/loginSuccess', function (req, res) {
-    res.render('loginPage_success', {closeWebview: true});
-});
-
-
-app.get('/claim', function (req, res) {
-    res.render('claimObjectPage');
+    res.render('loginPage', { error: null, userId: `this is your user Id: ${userId}` });
 });
 
 app.post('/login', function (req, res) {
@@ -67,19 +64,46 @@ app.post('/login', function (req, res) {
     request(options, function (error, response, body) {
         if (error) {
             throw new Error(error);
-        }    
+        }
         else {
             console.log("the user Id is" + userId);
-            if(!body.error){
+            if (!body.error) {
                 writeValue(`${userId},userData`, "authToken", body);
                 res.redirect('/loginPage_success');
             }
-            res.render('loginPage', {error: 'Login failed, please try again', username:"there is the useridbla"});
+            res.render('loginPage', { error: 'Login failed, please try again', username: "there is the useridbla" });
         }
         console.log(body);
     });
-    
+
 })
+
+app.get('/loginSuccess', function (req, res) {
+    res.render('loginPage_success', { closeWebview: true });
+});
+
+/**
+ * The claims object and post them on database..
+ */
+//set user id
+
+app.get('/claimObjects', function (req, res) {
+    userId = req.query('userId');
+    userId = userId.substr(0, 16);
+    res.render('claimObjects');
+});
+app.post('/claimObjects', function (req, res) {
+
+    var objectName1 = req.body.object1;
+    var objectPrice1 = req.body.price1;
+
+    writeValue(`${userId},userData`, "claim_object1", objectName1);
+    writeValue(`${userId},userData`, "claim_price1", objectPrice1);
+})
+
+
+
+
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('App started and listening on port 3000!');
