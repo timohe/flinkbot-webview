@@ -185,7 +185,7 @@ var DirectLine = require('botframework-directlinejs').DirectLine;
 
 app.get('/test', function (req, res) {
 
-    response.send('Hello Idiot!')
+    res.send('Hello Idiot!')
 
 
 
