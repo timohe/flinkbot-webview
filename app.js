@@ -14,7 +14,6 @@ var express = require("express");
 var app = express();
 var azureStorage = require("./azureStorage");
 
-
 // expose the public folder so it can be used.
 app.use(express.static("public"));
 // use body Parser middleware to get variables submitted (req.body)
