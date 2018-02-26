@@ -74,3 +74,8 @@ async function writeValue(para_documentId, key, value) {
 		return err;
 	}
 }
+
+module.exports.getDocument = getDocument;  
+module.exports.writeValue = writeValue;  
+module.exports.getValue = getValue;  
+module.exports.replaceDocument = replaceDocument;  

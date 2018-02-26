@@ -62,7 +62,7 @@ app.post("/login", function (req, res) {
 			throw new Error(error);
 		}
 		else {
-			console.log("the user Id is" + userId);
+			console.log("the user Id is: " + userId);
 			if (!body.error) {
 				azureStorage.writeValue(`${userId},userData`, "authToken", body);
 				res.redirect("/loginSuccess");
@@ -109,7 +109,6 @@ app.post("/claimObjects", function (req, res) {
 
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
-
 	azureStorage.writeValue(`${userId},userData`, "claim_object1", objectName1);
 	azureStorage.writeValue(`${userId},userData`, "claim_price1", objectPrice1);
 });
