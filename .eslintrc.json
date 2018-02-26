@@ -14,6 +14,8 @@
         ],
         "no-unused-vars": "off",
         "no-console": "off",
+        "no-process-env": "off",
+       
         "quotes": [
             "error",
             "double"
