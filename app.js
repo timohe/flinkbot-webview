@@ -1,7 +1,6 @@
 "use strict";
 // EJS express node turorial https://codeburst.io/build-a-weather-website-in-30-minutes-with-node-js-express-openweather-a317f904897b
 // vscode: shift option f to beautify
-/* eslint-disable no-undef*/
 var url = require("url");
 var restify = require("restify");
 var dotenv = require("dotenv");
@@ -13,8 +12,8 @@ var DirectLine = require("botframework-directlinejs").DirectLine;
 global.XMLHttpRequest = require("xhr2");
 var express = require("express");
 var app = express();
-var azureStorage = require("/.azureStorage.js");
-/* eslint-enable no-undef*/
+var azureStorage = require("azureStorage.js");
+
 
 // expose the public folder so it can be used.
 app.use(express.static("public"));
