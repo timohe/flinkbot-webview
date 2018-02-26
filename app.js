@@ -12,7 +12,7 @@ var DirectLine = require("botframework-directlinejs").DirectLine;
 global.XMLHttpRequest = require("xhr2");
 var express = require("express");
 var app = express();
-var azureStorage = require("azureStorage.js");
+var azureStorage = require("./azureStorage");
 
 
 // expose the public folder so it can be used.
