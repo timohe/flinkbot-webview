@@ -124,6 +124,20 @@ app.listen(process.env.PORT || 3000, function () {
 });
 
 
-
-
-
+app.get("/testEvent", function (req, res) {
+	setUserId(req);
+	var directLine = new DirectLine({
+		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
+	});
+	directLine.postActivity({
+		//USER ID HAS TO BE SET BEFORE!
+		from: { id: userId }, // required (from.name is optional)
+		type: "event",
+		value: "User successfully logged in to Flink",
+		name: "loginSuccessful",
+	}).subscribe(
+		id => console.log("Posted activity, assigned ID ", id),
+		error => console.log("Error posting activity", error)
+	);
+	res.send("Event has been sent (check log)!");
+});
