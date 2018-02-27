@@ -126,6 +126,7 @@ app.listen(process.env.PORT || 3000, function () {
 
 
 app.get("/testEvent", function (req, res) {
+	// https://flinkbot-webview-win.azurewebsites.net/testEvent?=default-user
 	setUserId(req);
 	var directLine = new DirectLine({
 		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
@@ -137,7 +138,7 @@ app.get("/testEvent", function (req, res) {
 		value: "User successfully logged in to Flink",
 		name: "loginSuccessful",
 	}).subscribe(
-		id => console.log("Posted activity, assigned ID ", id),
+		id => console.log(`Posted activity, assigned ID ${id} and userId is: ${userId}`),
 		error => console.log("Error posting activity", error)
 	);
 	res.send("Event has been sent (check log)!");
