@@ -126,7 +126,7 @@ app.listen(process.env.PORT || 3000, function () {
 
 
 app.get("/testEvent", function (req, res) {
-	// https://flinkbot-webview-win.azurewebsites.net/testEvent?=default-user
+	// https://flinkbot-webview-win.azurewebsites.net/testEvent?default-user
 	setUserId(req);
 	var directLine = new DirectLine({
 		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
