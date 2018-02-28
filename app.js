@@ -1,5 +1,9 @@
 "use strict";
 //https://flinkbot-webview-win.azurewebsites.net/
+
+https://flinkbot-webview-win.azurewebsites.net/claimObjects?2105307782829421=&fb_iframe_origin=https%3A%2F%2Fwww.messenger.com
+
+
 //my facebook id for testing: 2105307782829421
 // EJS express node turorial https://codeburst.io/build-a-weather-website-in-30-minutes-with-node-js-express-openweather-a317f904897b
 // vscode: shift option f to beautify
@@ -24,12 +28,12 @@ app.set("view engine", "ejs");
 
 var userId;
 function setUserId(para_req) {
-	userId = para_req.query("userId");
-	if (userId.substr(0, 12) == "default-user") {
-		userId = "default-user";
-	} else {
-		userId = userId.substr(0, 16);
-	}
+	userId = para_req.query.userId;
+	// if (userId.substr(0, 12) == "default-user") {
+	// 	userId = "default-user";
+	// } else {
+	// 	userId = userId.substr(0, 16);
+	// }
 }
 // use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
 
