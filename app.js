@@ -9,12 +9,12 @@ var dotenv = require("dotenv");
 dotenv.config();
 var bodyParser = require("body-parser");
 var request = require("request");
-var DirectLine = require("botframework-directlinejs").DirectLine;
 //to make directLine to send data to bot work https://github.com/microsoft/botframework-DirectLinejs
 global.XMLHttpRequest = require("xhr2");
 var express = require("express");
 var app = express();
 var azureStorage = require("./azureStorage");
+var directLine = require("./directLine");
 
 // expose the public folder so it can be used.
 app.use(express.static("public"));
@@ -67,7 +67,8 @@ app.post("/login", function (req, res) {
 			console.log("the user Id is: " + userId);
 			if (!body.error) {
 				azureStorage.writeValue(`${userId},userData`, "authToken", body);
-				res.redirect("/loginSuccess");
+				directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
+				res.render("closeWebview", { closeWebview: true });
 			}
 			res.render("loginPage", { error: "Login failed, please try again", username: "there is the useridbla" });
 		}
@@ -75,26 +76,9 @@ app.post("/login", function (req, res) {
 	});
 
 });
-
-app.get("/loginSuccess", function (req, res) {
-	var directLine = new DirectLine({
-		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
-		// token: /* or put your Direct Line token here (supply secret OR token, not both) */,
-		// domain: /* optional: if you are not using the default Direct Line endpoint, e.g. if you are using a region-specific endpoint, put its full URL here */,
-		// webSocket: /* optional: false if you want to use polling GET to receive messages. Defaults to true (use WebSocket). */,
-		// pollingInterval: /* optional: set polling interval in milliseconds. Default to 1000 */,
-	});
-	directLine.postActivity({
-		//USER ID HAS TO BE SET BEFORE!
-		from: { id: userId }, // required (from.name is optional)
-		type: "event",
-		value: "User successfully logged in to Flink",
-		name: "loginSuccessful",
-	}).subscribe(
-		id => console.log("Posted activity, assigned ID ", id),
-		error => console.log("Error posting activity", error)
-	);
-	res.render("loginPage_success", { closeWebview: true });
+app.get("/sendEventAndClose", function (req, res) {
+	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
+	res.render("closeWebview", { closeWebview: true });
 });
 
 /**
@@ -102,23 +86,20 @@ app.get("/loginSuccess", function (req, res) {
  */
 //set user id
 
-app.get("/claimObjects", function (req, res) {
-	userId = req.query("userId");
-	userId = userId.substr(0, 16);
-	res.render("claimObjects");
-});
 app.post("/claimObjects", function (req, res) {
-
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
 	azureStorage.writeValue(`${userId},userData`, "claim_object1", objectName1);
 	azureStorage.writeValue(`${userId},userData`, "claim_price1", objectPrice1);
+	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
+	res.render("closeWebview", { closeWebview: true });
 });
 
 app.get("/claimObjects", function (req, res) {
 	setUserId(req);
 	res.render("claimObjects");
 });
+
 
 app.listen(process.env.PORT || 3000, function () {
 	console.log("App started and listening on port 3000!");
@@ -129,18 +110,5 @@ app.listen(process.env.PORT || 3000, function () {
 app.get("/testEvent", function (req, res) {
 	// https://flinkbot-webview-win.azurewebsites.net/testEvent?default-user
 	setUserId(req);
-	var directLine = new DirectLine({
-		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
-	});
-	directLine.postActivity({
-		//USER ID HAS TO BE SET BEFORE!
-		from: { id: userId }, // required (from.name is optional)
-		type: "event",
-		value: "User successfully logged in to Flink",
-		name: "loginSuccessful",
-	}).subscribe(
-		id => console.log(`Posted activity, assigned ID ${id} and userId is: ${userId}`),
-		error => console.log("Error posting activity", error)
-	);
-	res.send("Event has been sent (check log)!");
+	directLine.postDirectLineEvent("test", "testname", "2105307782829421");
 });
