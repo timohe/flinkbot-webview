@@ -4,7 +4,6 @@
 // EJS express node turorial https://codeburst.io/build-a-weather-website-in-30-minutes-with-node-js-express-openweather-a317f904897b
 // vscode: shift option f to beautify
 var url = require("url");
-var restify = require("restify");
 var dotenv = require("dotenv");
 dotenv.config();
 var bodyParser = require("body-parser");
@@ -109,4 +108,14 @@ app.get("/testEvent", function (req, res) {
 	// https://flinkbot-webview-win.azurewebsites.net/testEvent?default-user
 	setUserId(req);
 	directLine.postDirectLineEvent("test", "testname", "2105307782829421");
+});
+
+
+app.get("/testParam", function (req, res) {
+	//  = req.query("userId");
+	// userId = userId.substr(0, 16);
+	let id = req.query.id;
+	let token = req.query.token;
+	
+	res.send(`Those are your params ${req.query.id} and ${req.query.token} and ${req.query}`);
 });
