@@ -47,8 +47,9 @@ app.get("/", function (req, res) {
  * Handle login, save token in azure database
  */
 app.get("/login", function (req, res) {
-	userId = req.query("userId");
-	userId = userId.substr(0, 16);
+	setUserId(req);
+	// userId = req.query("userId");
+	// userId = userId.substr(0, 16);
 	res.render("loginPage", { error: null, userId: `this is your user Id: ${userId}` });
 });
 
