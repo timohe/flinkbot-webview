@@ -36,6 +36,7 @@ function getDocument(param_documentId) {
 		});
 	});
 };
+/* eslint disable-next-line */
 async function getValue(para_documentId) { 
 	console.log("getValue started")
 	try {
