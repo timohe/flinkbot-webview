@@ -68,7 +68,7 @@ app.post("/login", function (req, res) {
 			if (!body.error) {
 				azureStorage.writeValue(`${userId},userData`, "authToken", body);
 				directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
-				res.render("closeWebview", { closeWebview: true });
+				res.render("sendEventAndClose", { closeWebview: true });
 			}
 			res.render("loginPage", { error: "Login failed, please try again", username: "there is the useridbla" });
 		}
@@ -78,21 +78,19 @@ app.post("/login", function (req, res) {
 });
 app.get("/sendEventAndClose", function (req, res) {
 	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
-	res.render("closeWebview", { closeWebview: true });
+	res.render("sendEventAndClose", { closeWebview: true });
 });
 
 /**
  * The claims object and post them on database..
  */
-//set user id
-
 app.post("/claimObjects", function (req, res) {
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
 	azureStorage.writeValue(`${userId},userData`, "claim_object1", objectName1);
 	azureStorage.writeValue(`${userId},userData`, "claim_price1", objectPrice1);
 	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
-	res.render("closeWebview", { closeWebview: true });
+	res.render("sendEventAndClose", { closeWebview: true });
 });
 
 app.get("/claimObjects", function (req, res) {
