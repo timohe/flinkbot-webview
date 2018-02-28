@@ -26,16 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //use EJS (no require needed)
 app.set("view engine", "ejs");
 
-var userId;
+// use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
+let userId;
 function setUserId(para_req) {
 	userId = para_req.query.userId;
-	// if (userId.substr(0, 12) == "default-user") {
-	// 	userId = "default-user";
-	// } else {
-	// 	userId = userId.substr(0, 16);
-	// }
 }
-// use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
+
 
 /**
  * Handle login, save token in azure database
