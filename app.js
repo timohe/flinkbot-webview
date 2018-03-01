@@ -91,7 +91,7 @@ app.post("/claimObjects", function (req, res) {
 	var objectPrice1 = req.body.price1;
 	azureStorage.writeValue(`${userId},userData`, "claim_object1", objectName1);
 	azureStorage.writeValue(`${userId},userData`, "claim_price1", objectPrice1);
-	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
+	directLine.postDirectLineEvent("User filled out the damaged objects", "claimObjectsSuccessful", userId);
 	res.render("closeWebview");
 });
 app.get("/claimObjects", function (req, res) {
