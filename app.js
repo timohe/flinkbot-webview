@@ -97,8 +97,8 @@ app.post("/login", function (req, res) {
 app.post("/claimObjects", function (req, res) {
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
-	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", "objectName1");
-	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", "objectPrice1");
+	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", objectName1);
+	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", objectPrice1);
 	// azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", objectName1);
 	// azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", objectPrice1);
 	directLine.postDirectLineEvent("User filled out the damaged objects", "claimObjectsSuccessful", userId);
