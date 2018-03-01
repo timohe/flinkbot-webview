@@ -101,6 +101,7 @@ app.post("/claimObjects", function (req, res) {
 app.get("/claimObjects", function (req, res) {
 	setUserId(req);
 	setCurrentClaimName(req);
+	console.log("this is the current claim name: " + currentClaimName);
 	res.render("claimObjects");
 });
 
