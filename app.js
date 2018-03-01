@@ -1,7 +1,7 @@
 "use strict";
 //https://flinkbot-webview-win.azurewebsites.net/
 
-https://flinkbot-webview-win.azurewebsites.net/claimObjects?2105307782829421=&fb_iframe_origin=https%3A%2F%2Fwww.messenger.com
+// https://flinkbot-webview-win.azurewebsites.net/claimObjects?2105307782829421=&fb_iframe_origin=https%3A%2F%2Fwww.messenger.com
 
 
 //my facebook id for testing: 2105307782829421
@@ -88,13 +88,14 @@ app.post("/login", function (req, res) {
 });
 
 /**
- * CLAIMS: The claims object and post them on database..
+ * CLAIMS: The claims object and post them on database.
+ * https://flinkbot-webview-win.azurewebsites.net/claimObjects?userId=2105307782829421&currentClaimName=claim1
  */
 app.post("/claimObjects", function (req, res) {
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
-	azureStorage.writeValue(`${userId},userData`, "claim_object1", objectName1);
-	azureStorage.writeValue(`${userId},userData`, "claim_price1", objectPrice1);
+	azureStorage.writeValue(`${userId},userData`, currentClaimName.object1, objectName1);
+	azureStorage.writeValue(`${userId},userData`, currentClaimName.price1, objectPrice1);
 	directLine.postDirectLineEvent("User filled out the damaged objects", "claimObjectsSuccessful", userId);
 	res.render("closeWebview");
 });
