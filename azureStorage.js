@@ -63,6 +63,7 @@ function replaceDocument(documentId, newdocument) {
 	});
 };
 async function writeValue(para_documentId, key, hasSubkey, subkey, value) {
+	console.log("writing values to database: "+para_documentId+" , "+key+" , "+subkey+" , "+value)
 	try {
 		let oldDocument = await getDocument(para_documentId);
 		if(hasSubkey){
