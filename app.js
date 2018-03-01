@@ -31,16 +31,24 @@ let userId;
 function setUserId(para_req) {
 	userId = para_req.query.userId;
 }
+app.listen(process.env.PORT || 3000, function () {
+	console.log("App started and listening on port 3000!");
+});
+
+
+
+
 
 
 /**
- * Handle login, save token in azure database
+ * ROOT
  */
 app.get("/", function (req, res) {
 	res.send("Go away! There is nothing here at the moment!");
 });
+
 /**
- * Handle login, save token in azure database
+ * LOGIN: Handle login, save token in azure database
  */
 app.get("/login", function (req, res) {
 	setUserId(req);
@@ -48,7 +56,6 @@ app.get("/login", function (req, res) {
 	// userId = userId.substr(0, 16);
 	res.render("loginPage", { error: null, userId: `this is your user Id: ${userId}` });
 });
-
 app.post("/login", function (req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
@@ -74,11 +81,10 @@ app.post("/login", function (req, res) {
 		}
 		console.log(body);
 	});
-
 });
 
 /**
- * The claims object and post them on database..
+ * CLAIMS: The claims object and post them on database..
  */
 app.post("/claimObjects", function (req, res) {
 	var objectName1 = req.body.object1;
@@ -88,31 +94,27 @@ app.post("/claimObjects", function (req, res) {
 	directLine.postDirectLineEvent("User successfully logged in to Flink", "loginSuccessful", userId);
 	res.render("closeWebview");
 });
-
 app.get("/claimObjects", function (req, res) {
 	setUserId(req);
 	res.render("claimObjects");
 });
 
 
-app.listen(process.env.PORT || 3000, function () {
-	console.log("App started and listening on port 3000!");
-	//   console.log(process.versions)
-});
 
 
-app.get("/testEvent", function (req, res) {
-	// https://flinkbot-webview-win.azurewebsites.net/testEvent?default-user
-	setUserId(req);
-	directLine.postDirectLineEvent("test", "testname", "2105307782829421");
-});
-
-
-app.get("/testParam", function (req, res) {
-	//  = req.query("userId");
-	// userId = userId.substr(0, 16);
-	let id = req.query.id;
-	let token = req.query.token;
+/**
+ * TESTS: The claims object and post them on database..
+ */
+// app.get("/testEvent", function (req, res) {
+// 	// https://flinkbot-webview-win.azurewebsites.net/testEvent?default-user
+// 	setUserId(req);
+// 	directLine.postDirectLineEvent("test", "testname", "2105307782829421");
+// });
+// app.get("/testParam", function (req, res) {
+// 	//  = req.query("userId");
+// 	// userId = userId.substr(0, 16);
+// 	let id = req.query.id;
+// 	let token = req.query.token;
 	
-	res.send(`Those are your params ${req.query.id} and ${req.query.token} and ${req.query}`);
-});
+// 	res.send(`Those are your params ${req.query.id} and ${req.query.token} and ${req.query}`);
+// });
