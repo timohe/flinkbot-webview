@@ -90,12 +90,17 @@ app.post("/login", function (req, res) {
 /**
  * CLAIMS: The claims object and post them on database.
  * https://flinkbot-webview-win.azurewebsites.net/claimObjects?userId=2105307782829421&currentClaimName=claim1
+ * * localhost:3000/claimObjects?userId=2105307782829421&currentClaimName=claim1
  */
+
+
 app.post("/claimObjects", function (req, res) {
 	var objectName1 = req.body.object1;
 	var objectPrice1 = req.body.price1;
-	azureStorage.writeValue(`${userId},userData`, currentClaimName.object1, objectName1);
-	azureStorage.writeValue(`${userId},userData`, currentClaimName.price1, objectPrice1);
+	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", "objectName1");
+	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", "objectPrice1");
+	// azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", objectName1);
+	// azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", objectPrice1);
 	directLine.postDirectLineEvent("User filled out the damaged objects", "claimObjectsSuccessful", userId);
 	res.render("closeWebview");
 });

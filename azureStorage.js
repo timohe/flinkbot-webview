@@ -47,8 +47,6 @@ async function getValue(para_documentId) {
 		return err;
 	}
 }
-
-
 /**
  * Add or replace an entry in the Database
  */
@@ -64,10 +62,21 @@ function replaceDocument(documentId, newdocument) {
 		});
 	});
 };
-async function writeValue(para_documentId, key, value) {
+async function writeValue(para_documentId, key, hasSubkey, subkey, value) {
 	try {
 		let oldDocument = await getDocument(para_documentId);
-		oldDocument.data[key] = value;
+		if(hasSubkey){
+			if(!oldDocument.data[key]){
+				oldDocument.data[key]= {};
+				oldDocument.data[key][subkey] = value;
+			}else{
+				// let completeKey = `${key}.${subkey}`;
+				console.log("subkey is"+subkey);
+				oldDocument.data[key][subkey] = value;
+			}
+		}else{
+			oldDocument.data[key] = value;
+		}
 		let docAfterReplacing = await replaceDocument(para_documentId, oldDocument);
 		console.log("This is updated document: " + "\n" + JSON.stringify(docAfterReplacing));
 		return docAfterReplacing;
