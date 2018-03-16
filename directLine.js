@@ -1,9 +1,11 @@
 var DirectLine = require("botframework-directlinejs").DirectLine;
+var dotenv = require("dotenv");
+dotenv.config();
 
 
 function postDirectLineEvent(eventValue, eventName, userId){
 	var directLine = new DirectLine({
-		secret: "KQrRiwONIeo.cwA.5xs.nOqkzHEhFVRPBUjALfuBHR1AAQpy7EZg4yali8JXcSo",
+		secret: process.env.DIRECTLINE_SECRET,
 	});
 	directLine.postActivity({
 		//USER ID HAS TO BE SET BEFORE!
