@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <title>Beschädigte Objekte eintragen</title>
     <script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="//cdn.muicss.com/mui-0.9.38/css/mui.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.muicss.com/mui-0.9.38/js/mui.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
     <style>
         .fileContainer {
             overflow: hidden;
@@ -43,7 +45,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <td><strong>Bezeichnung (z.B. iPhone 6)</strong></td>
+                    <td><strong>Bezeichnung</strong></td>
                     <td><strong>Preis</strong></td>
                     <!-- <td><strong>Quitting (optional)</strong></td> -->
                     <td></td>
@@ -51,8 +53,8 @@
             </thead>
             <tbody>
                 <tr v-for="(row, index) in rows">
-                    <td><input type="text" class="ghost-input" v-model="row.title"></td>
-                    <td><input type="text" class="ghost-input" v-model="row.description"></td>
+                    <td><input type="text" class="mui-textfield" v-model="row.title"></td>
+                    <td><input type="text" class="mui-textfield" v-model="row.description"></td>
                     <!-- <td>
                         <label class="fileContainer">
                             {{row.file.name}}
@@ -60,7 +62,7 @@
                         </label>
                     </td> -->
                     <td>
-                        <a v-on:click="removeElement(index);" style="cursor: pointer">Löschen</a>
+                        <a v-on:click="removeElement(index);" class="mui-btn mui-btn--danger" style="cursor: pointer">Löschen</a>
                     </td>
 
 
@@ -68,7 +70,10 @@
             </tbody>
         </table>
         <div>
-            <button class="ghost-button" @click="addRow">Mehr eintragen</button>
+            <button class="mui-btn mui-btn--raised" @click="addRow">Mehr eintragen</button>
+        </div>
+        <div>
+            <button class="mui-btn mui-btn--raised" @click="send">Absenden</button>
         </div>
     </div>
 
@@ -89,13 +94,23 @@
                         // }
                     });
                 },
+                send: function() {
+                    var elem = document.createElement('tr');
+                    this.rows.push({
+                        title: "",
+                        description: "",
+                        // file: {
+                        //     name: 'Bild hochladen'
+                        // }
+                    });
+                },
                 removeElement: function(index) {
                     this.rows.splice(index, 1);
                 },
-                setFilename: function(event, row) {
-                    var file = event.target.files[0];
-                    row.file = file
-                }
+                // setFilename: function(event, row) {
+                //     var file = event.target.files[0];
+                //     row.file = file
+                // },
             }
         });
     </script>

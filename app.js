@@ -29,12 +29,17 @@ app.set("view engine", "ejs");
 // use like this http://localhost:3000/login?userId=I1KJ4DNAAEP
 let userId;
 let currentClaimName;
+let claimPriceType;
 function setUserId(para_req) {
 	userId = para_req.query.userId;
 }
 function setCurrentClaimName(para_req) {
 	currentClaimName = para_req.query.currentClaimName;
 }
+function setClaimPriceType(para_req) {
+	claimPriceType = para_req.query.claimPriceType;
+}
+
 app.listen(process.env.PORT || 3000, function () {
 	console.log("App started and listening on port 3000!");
 });
@@ -107,7 +112,7 @@ app.get("/claimObjects", function (req, res) {
 	setUserId(req);
 	setCurrentClaimName(req);
 	console.log("this is the current claim name: " + currentClaimName);
-	res.render("claimObjects");
+	res.render("claimObjectsStatic", { price: claimPriceType });
 });
 
 

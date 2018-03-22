@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    <div>
+        <p class="mainTitle">Bitte trage die beschädigten Sachen ein.</p>
+
+        <% if(claimPriceType == "liability"){ %>
+            <p class="subTitle">Als Preis trage bitte den Zeitwert ein, also das Objekt heute gebraucht für einen Wert hat.</p>
+        <% } %>
+        <% if(claimPriceType !== "liability"){ %>
+            <p class="subTitle">Als Preis trage den Neuwert ein, also was das gleiche oder ein gleichwertiges Objekt heute neu im Laden kostet.</p>
+        <% } %>
+
+    </div>
+    <div class="container">
+        <fieldset>
+            <form action="/login" method="post">
+                <input id="object1" onchange="addInput(2)" name="Object1" type="text" class="ghost-input" placeholder="1. Objekt" required>
+                <input id="price1" type="number" class="ghost-input" placeholder="Preis" required>
+                <input id="object2" onchange="addInput(3)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="2. Objekt">
+                <input id="price2" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object3" onchange="addInput(4)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="3. Objekt">
+                <input id="price3" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object4" onchange="addInput(5)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="4. Objekt">
+                <input id="price4" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object5" name="Object 1" type="text" class="ghost-input-hidden" placeholder="5 . Objekt">
+                <input id="price5" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <!-- <input name="Object 1" type="text" class="ghost-input" placeholder="4. Objekt">
+				<input name="Preis" type="number" class="ghost-input" placeholder="Preis"> -->
+
+                <input type="submit" class="ghost-button" value="Fertig">
+            </form>
+        </fieldset>
+
+</body>
+
+<script type="text/javascript">
+
+    function addInput(id) {
+        var x = document.getElementById("object" + id);
+        x.style.display = "block";
+        var y = document.getElementById("price" + id);
+        y.style.display = "block";
+    }
+</script>
+
+</html>
