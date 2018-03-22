@@ -53,12 +53,12 @@
                 <tr v-for="(row, index) in rows">
                     <td><input type="text" class="ghost-input" v-model="row.title"></td>
                     <td><input type="text" class="ghost-input" v-model="row.description"></td>
-                    <td>
+                    <!-- <td>
                         <label class="fileContainer">
                             {{row.file.name}}
                             <input type="file" @change="setFilename($event, row)" :id="index">
                         </label>
-                    </td>
+                    </td> -->
                     <td>
                         <a v-on:click="removeElement(index);" style="cursor: pointer">Löschen</a>
                     </td>
