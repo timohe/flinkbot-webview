@@ -2,8 +2,9 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Example Dynamic Form</title>
+    <title>Beschädigte Objekte eintragen</title>
     <script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <style>
         .fileContainer {
             overflow: hidden;
@@ -42,9 +43,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <td><strong>Title</strong></td>
-                    <td><strong>Description</strong></td>
-                    <td><strong>File</strong></td>
+                    <td><strong>Bezeichnung (z.B. iPhone 6)</strong></td>
+                    <td><strong>Preis</strong></td>
+                    <td><strong>Quitting (optional)</strong></td>
                     <td></td>
                 </tr>
             </thead>
@@ -59,7 +60,7 @@
                         </label>
                     </td>
                     <td>
-                        <a v-on:click="removeElement(index);" style="cursor: pointer">Remove</a>
+                        <a v-on:click="removeElement(index);" style="cursor: pointer">Löschen</a>
                     </td>
 
 
@@ -84,7 +85,7 @@
                         title: "",
                         description: "",
                         file: {
-                            name: 'Choose File'
+                            name: 'Bild hochladen'
                         }
                     });
                 },
