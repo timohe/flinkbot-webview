@@ -22,17 +22,17 @@
     </div>
     <div class="container">
         <fieldset>
-            <form action="/login" method="post">
-                <input id="object1" onchange="addInput(2)" name="Object1" type="text" class="ghost-input" placeholder="1. Objekt" required>
-                <input id="price1" type="number" class="ghost-input" placeholder="Preis" required>
-                <input id="object2" onchange="addInput(3)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="2. Objekt">
-                <input id="price2" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
-                <input id="object3" onchange="addInput(4)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="3. Objekt">
-                <input id="price3" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
-                <input id="object4" onchange="addInput(5)" name="Object 1" type="text" class="ghost-input-hidden" placeholder="4. Objekt">
-                <input id="price4" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
-                <input id="object5" name="Object 1" type="text" class="ghost-input-hidden" placeholder="5 . Objekt">
-                <input id="price5" name="Preis" type="number" class="ghost-input-hidden" placeholder="Preis">
+            <form action="/claimObjects" method="post">
+                <input id="object1" onchange="addInput(2)" name="object1" type="text" class="ghost-input" placeholder="1. Objekt" required>
+                <input id="price1" name="price1" type="number" class="ghost-input" placeholder="Preis" required>
+                <input id="object2" onchange="addInput(3)" name="object2" type="text" class="ghost-input-hidden" placeholder="2. Objekt">
+                <input id="price2" name="price2" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object3" onchange="addInput(4)" name="object3" type="text" class="ghost-input-hidden" placeholder="3. Objekt">
+                <input id="price3" name="price3" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object4" onchange="addInput(5)" name="object4" type="text" class="ghost-input-hidden" placeholder="4. Objekt">
+                <input id="price4" name="price4" type="number" class="ghost-input-hidden" placeholder="Preis">
+                <input id="object5" name="object5" type="text" class="ghost-input-hidden" placeholder="5 . Objekt">
+                <input id="price5" name="price5" type="number" class="ghost-input-hidden" placeholder="Preis">
                 <!-- <input name="Object 1" type="text" class="ghost-input" placeholder="4. Objekt">
 				<input name="Preis" type="number" class="ghost-input" placeholder="Preis"> -->
 
@@ -50,6 +50,9 @@
         var y = document.getElementById("price" + id);
         y.style.display = "block";
     }
+
+    // use like this
+    //http://localhost:3000/claimObjects?userId=2105307782829421&currentClaimName=claim2&claimPriceType=liability
 </script>
 
 </html>

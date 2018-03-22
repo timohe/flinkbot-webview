@@ -38,6 +38,7 @@ function setCurrentClaimName(para_req) {
 }
 function setClaimPriceType(para_req) {
 	claimPriceType = para_req.query.claimPriceType;
+	// claimPriceType = "liability";
 }
 
 app.listen(process.env.PORT || 3000, function () {
@@ -100,20 +101,35 @@ app.post("/login", function (req, res) {
 
 
 app.post("/claimObjects", function (req, res) {
-	var objectName1 = req.body.object1;
-	var objectPrice1 = req.body.price1;
-	console.log(`objects is: ${objectName1} with price ${objectPrice1}`);
-	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "object1", objectName1);
-	azureStorage.writeValue(`${userId},userData`, currentClaimName, true, "price1", objectPrice1);
+	var claimObjects = cleanObject(req.body);
+
+	console.log(`req.body is: ${JSON.stringify(claimObjects)}`);
+	for (var damageObjectKey in claimObjects){
+		// console.log(`key is: ${damageObjectKey} values is ${claimObjects[damageObjectKey]}`);
+		azureStorage.writeValue(`${userId},userData`, currentClaimName, true, damageObjectKey, claimObjects[damageObjectKey]);
+	}
 	directLine.postDirectLineEvent("User filled out the damaged objects", "claimObjectsSuccessful", userId);
 	res.render("closeWebview");
 });
+
+function cleanObject(obj) {
+	for (var propName in obj) {
+		if (obj[propName] === null || obj[propName] === undefined || obj[propName] === "") {
+			delete obj[propName];
+		}
+	}
+	return obj;
+}
+
 app.get("/claimObjects", function (req, res) {
 	setUserId(req);
 	setCurrentClaimName(req);
+	setClaimPriceType(req);
 	console.log("this is the current claim name: " + currentClaimName);
-	res.render("claimObjectsStatic", { price: claimPriceType });
+	res.render("claimObjectsStatic", { claimPriceType: claimPriceType });
 });
+
+
 
 
 
@@ -131,6 +147,6 @@ app.get("/claimObjects", function (req, res) {
 // 	// userId = userId.substr(0, 16);
 // 	let id = req.query.id;
 // 	let token = req.query.token;
-	
+
 // 	res.send(`Those are your params ${req.query.id} and ${req.query.token} and ${req.query}`);
 // });
