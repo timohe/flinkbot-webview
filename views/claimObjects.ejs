@@ -51,8 +51,8 @@
             </thead>
             <tbody>
                 <tr v-for="(row, index) in rows">
-                    <td><input type="text" v-model="row.title"></td>
-                    <td><input type="text" v-model="row.description"></td>
+                    <td><input type="text" class="ghost-input" v-model="row.title"></td>
+                    <td><input type="text" class="ghost-input" v-model="row.description"></td>
                     <td>
                         <label class="fileContainer">
                             {{row.file.name}}
