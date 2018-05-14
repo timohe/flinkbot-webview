@@ -16,8 +16,6 @@ function postDirectLineEvent(eventValue, eventName, userId){
 	}).subscribe(
 		id => console.log("Posted activity, assigned ID ", id),
 		error => console.log("Error posting activity", error)
-	);
-	console.log("Direct line event created");
-	
+	);	
 }
 module.exports.postDirectLineEvent = postDirectLineEvent;  
