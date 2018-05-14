@@ -32,6 +32,7 @@ let currentClaimName;
 let claimPriceType;
 function setUserId(para_req) {
 	userId = para_req.query.userId;
+	console.log("This is the user id of the current user: "+ userId);
 }
 function setCurrentClaimName(para_req) {
 	currentClaimName = para_req.query.currentClaimName;
